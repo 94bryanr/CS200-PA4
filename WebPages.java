@@ -1,16 +1,16 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class WebPages{
 
-	public BST bst;
+	public HashTable hashTable;
 	public static int totalDoc=0;
 
 	//constructor
 	public WebPages(){
-		bst = new BST();
+		// creating hash table with temp value
+		hashTable = new HashTable(hashTable.size);
 	}
 	
 	//add page to fill in ArrayList
@@ -57,7 +57,7 @@ public class WebPages{
 				}
 
 				//adds the word to the BST
-				bst.add(filename, nextWord);
+				hashTable.add(filename, nextWord);
 				
 			}
 
@@ -70,41 +70,14 @@ public class WebPages{
 	
 	
 	public void printTree(){
-		//set up inorder iteration of tree
-		TreeIterator inorder = new TreeIterator(bst);
-		inorder.setInorder();
-		Term next = inorder.next();
-		//loop through tree and print inorder
-		while(inorder.hasNext()){
-			System.out.println(next.word);
-			next = inorder.next();
-		}
-		//print last word of BST
-		System.out.println(next.word);
+
+
 	}
 	
 	//returns which pages word is in with TFIDF
 	 public String[] whichPages(String word){
-		 //set up inorder traversal of BST
-		 TreeIterator treeIterator = new TreeIterator(bst);
-		 treeIterator.setInorder();
-		 Term next = treeIterator.next();
-		 while(treeIterator.hasNext()){
-			 //if word = element in BST, get that word and return w/ fillArray() (in Term Class)
-			 if(next.word.toLowerCase().equals(word)){
-				 bst.get(word, true);
-				 return next.fillArray();
-			 }
-			 next = treeIterator.next();
-		 }
-		 //check last element of BST, if equal, return w/ fillArray() (in Term Class)
-		 if(next.word.toLowerCase().equals(word)){
-			 bst.get(word, true);
-			 return next.fillArray();
-		 }
-		 bst.get(word, true);
+
 		 return null;
-		 
 	 }
 	
 
