@@ -3,10 +3,10 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 
-public class PA3 {
+public class PA4 {
 
 	public static void main(String[] args) {
-
+		
 		WebPages web = new WebPages();
 
 		try {
@@ -68,7 +68,7 @@ public class PA3 {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+	
 
 	}
 

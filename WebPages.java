@@ -16,7 +16,6 @@ public class WebPages{
 	//add page to fill in ArrayList
 	public void addPage(String filename){
 		
-		
 		totalDoc++;
 
 		try{
