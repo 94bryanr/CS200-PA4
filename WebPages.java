@@ -77,7 +77,7 @@ public class WebPages{
 
 		for(int i = 0; i < hashTable.size(); i++){
 			if(hashTable.hashTable[i] == null){
-				System.out.println("NULL");
+				//System.out.println("NULL");
 			}
 			else{
 				System.out.println(hashTable.hashTable[i].word);
@@ -86,7 +86,7 @@ public class WebPages{
 	}
 	
 	//returns which pages word is in with TFIDF
-	 public String[] whichPages(String word){
+	 public String[] bestPages(String query){
 
 		 return null;
 	 }

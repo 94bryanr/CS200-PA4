@@ -88,7 +88,7 @@ public class HashTable implements TermIndex {
 				// quadratic probing
 				positionIncrement = (counter*counter);
 				counter++;
-				System.out.println("Probed: " + positionIncrement + " address");
+				//System.out.println("Probed: " + positionIncrement + " address");
 			}
 		}
 		else if(end == null){
@@ -101,12 +101,12 @@ public class HashTable implements TermIndex {
 				// quadratic probing
 				positionIncrement = (counter*counter);
 				counter++;
-				System.out.println("ProbedHERE: " + positionIncrement + " address");
+				//System.out.println("ProbedHERE: " + positionIncrement + " address");
 			}
 
 		}
 		// return position
-		System.out.println("Found position: " + (position + positionIncrement));
+		//System.out.println("Found position: " + (position + positionIncrement));
 		return (position+positionIncrement)%(size-1);
 
 	}

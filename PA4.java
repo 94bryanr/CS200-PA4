@@ -32,16 +32,28 @@ public class PA4 {
 			web.printTable();
 
 			//skip EOFs
-			nextArg = scan.nextLine();
+			//nextArg = scan.nextLine();
 
 			System.out.println();
+			
+			while(!(nextArg.equals("*STOPs*"))){
+				nextArg = scan.nextLine();
+				web.pruneStopWords(nextArg);
+			}
+			
+			nextArg = scan.nextLine();
+			
+			System.out.println("WORDS");
+			web.printTable();
+			System.out.println();
+
 
 
 			//scanning though all whichPages words
 			while(!(nextArg == null)){
-				String[] pages = web.whichPages(nextArg.toLowerCase());
+				String[] pages = web.bestPages(nextArg.toLowerCase());
 				if(pages == null){
-					System.out.println(nextArg + " not found");
+					System.out.println("[" + nextArg + " ]" + " not found");
 				}
 				else{
 					System.out.print(nextArg + " in pages: ");
