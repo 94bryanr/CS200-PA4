@@ -7,14 +7,19 @@ public class PA4 {
 
 	public static void main(String[] args) {
 		
-		WebPages web = new WebPages();
 
 		try {
+			
 
 			File file = new File(args[0]);
 			Scanner scan;
 			scan = new Scanner(file);
 			String nextArg = scan.nextLine();
+			
+			Integer hashSize = new Integer(nextArg);
+			nextArg = scan.nextLine();
+			
+			WebPages web = new WebPages(hashSize);
 
 			//adding files/creating new webPages
 			while(!(nextArg.equals("*EOFs*"))){
@@ -24,7 +29,7 @@ public class PA4 {
 			
 			// print out BST
 			System.out.println("WORDS");
-			web.printTree();
+			web.printTable();
 
 			//skip EOFs
 			nextArg = scan.nextLine();

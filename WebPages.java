@@ -8,9 +8,13 @@ public class WebPages{
 	public static int totalDoc=0;
 
 	//constructor
-	public WebPages(){
+	public WebPages(int hashSize){
 		// creating hash table with temp value
-		hashTable = new HashTable(hashTable.size);
+		hashTable = new HashTable(hashSize);
+	}
+	
+	public static int getTotalDoc(){
+		return totalDoc;
 	}
 	
 	//add page to fill in ArrayList
@@ -69,15 +73,26 @@ public class WebPages{
 	}
 	
 	
-	public void printTree(){
+	public void printTable(){
 
-
+		for(int i = 0; i < hashTable.size(); i++){
+			if(hashTable.hashTable[i] == null){
+				System.out.println("NULL");
+			}
+			else{
+				System.out.println(hashTable.hashTable[i].word);
+			}
+		}
 	}
 	
 	//returns which pages word is in with TFIDF
 	 public String[] whichPages(String word){
 
 		 return null;
+	 }
+	 
+	 public void pruneStopWords(String word){
+		 hashTable.delete(word);
 	 }
 	
 

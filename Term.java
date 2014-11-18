@@ -1,7 +1,7 @@
 import java.text.DecimalFormat;
 
 
-public class Term extends WebPages{
+public class Term {
 	
 		public String word;
 		public int docFrequency;
@@ -81,7 +81,7 @@ public class Term extends WebPages{
 				DecimalFormat df = new DecimalFormat("###0.00");
 				
 				//calculating TFIDF
-				double tfidf =  (float)first.getTermFrequency() * Math.log((float)(totalDoc)/(float)(docFrequency));
+				double tfidf =  (float)first.getTermFrequency() * Math.log((float)(WebPages.getTotalDoc())/(float)(docFrequency));
 				
 				// adding document name to array
 				list[index] = document;
