@@ -65,7 +65,6 @@ public class WebPages{
 				
 			}
 
-
 		} catch (FileNotFoundException e) {
 			System.out.println("Error: File Not Found");
 			e.printStackTrace();
@@ -74,26 +73,19 @@ public class WebPages{
 	
 	
 	public void printTable(){
-
-		for(int i = 0; i < hashTable.size(); i++){
-			if(hashTable.hashTable[i] == null){
-				//System.out.println("NULL");
-			}
-			else{
-				System.out.println(hashTable.hashTable[i].word);
-			}
-		}
+        int count = 1;
+        for(Term t: hashTable){
+            System.out.println("Term " + count + ": " + t.word);
+            count++;
+        }
 	}
 	
 	//returns which pages word is in with TFIDF
 	 public String[] bestPages(String query){
-
 		 return null;
 	 }
 	 
-	 public void pruneStopWords(String word){
-		 hashTable.delete(word);
-	 }
-	
-
+	 public void pruneStopWords(String word) {
+         hashTable.delete(word);
+     }
 }
