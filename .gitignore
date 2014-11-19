@@ -1,0 +1,11 @@
+*
+!.gitignore
+!HashTable.java
+!LinkedList.java
+!Node.java
+!Occurrence.java
+!PA4.java
+!Term.java
+!TermIndex.java
+!WebPages.java
+!HashTableIterator.java
