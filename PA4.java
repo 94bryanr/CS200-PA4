@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 
@@ -52,25 +53,19 @@ public class PA4 {
 			//scanning though all whichPages words
 			while(!(nextArg == null)){
 				String[] pages = web.bestPages(nextArg.toLowerCase());
+				String[] query = web.fillQueryArray(nextArg.toLowerCase());
+				Arrays.sort(query);
 				if(pages == null){
 					System.out.println("[" + nextArg + " ]" + " not found");
 				}
 				else{
-					System.out.print(nextArg + " in pages: ");
-					for(int i = 0; i < pages.length-1; i++){
-						System.out.print(pages[i] + ": ");
-						if(i < pages.length-2){
-							i++;
-							System.out.print(pages[i] + ", ");
-						}
+					System.out.print("[");
+					for(int i = 0; i < query.length; i++){
+						System.out.print(query[i] + " ");
 					}
-					if(pages.length > 0){
-						System.out.println(pages[pages.length-1]);
-					}
-					else{
-						System.out.println();
-					}
-
+					System.out.print("] in ");
+					System.out.print(pages[0] + ": ");
+					System.out.println(pages[1]);
 				}
 				if(scan.hasNext()){
 					nextArg = scan.nextLine();

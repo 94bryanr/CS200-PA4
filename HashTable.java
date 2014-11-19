@@ -14,18 +14,18 @@ public class HashTable implements TermIndex {
 	@Override
 	public void add(String filename, String newWord) {
 		Term word = new Term(newWord);
-		word.incFrequency(filename);
 		//Do not add new term if one already exists
 		if(get(newWord, false) == null){
 			int position = search(newWord, null);
 			if(notFound == false){
 				itemCounter++;
+				word.incFrequency(filename);
 				hashTable[position] = word;
 			}
 		}
-		else
+		else if(notFound == false){
 			get(newWord, false).incFrequency(filename);
-		
+		}
 		if(itemCounter >= (hashTable.length*.8)){
 			rehash();
 		}

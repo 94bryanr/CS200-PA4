@@ -1,5 +1,3 @@
-import java.text.DecimalFormat;
-
 
 public class Term {
 	
@@ -9,6 +7,7 @@ public class Term {
 		LinkedList list = new LinkedList();
 		public Node first;
 		boolean inList;
+		double tfidf;
 		
 		//Construction of a term
 		public Term(String name){
@@ -19,14 +18,6 @@ public class Term {
 		//increment frequency for terms and add documents to linked list
 		public void incFrequency(String document){
 			totalFrequency++;
-			
-			//if empty, insert occurrence
-			if(first == null){
-				first = new Node(document);
-				inList = true;
-				list.add(document);
-				docFrequency++;
-			}
 			
 			//loop through list
 			while(first != null){
@@ -41,8 +32,17 @@ public class Term {
 				else{
 					inList = false;
 				}
-				
 				first = first.getNext();
+			}
+			
+			first = list.head;
+			
+			//if empty, insert occurrence
+			if(first == null){
+				first = new Node(document);
+				inList = true;
+				list.add(document);
+				docFrequency++;
 			}
 			
 			//if not in list, add to end
@@ -53,49 +53,50 @@ public class Term {
 			
 			//resets first to front of linked list
 			first = list.head;
-			
 		}
 		
+		public double[] fillTFIDFarray(){
 
-		// fills array of Document names and TFIDF for a given Term
-		public String[] fillArray(){
-			
 			//create array to return
-			String[] list = new String[0];
+			double[] TFIDFarray = new double[docFrequency];
 			int index = 0;
-			
+
 			// loop through linked list of document names
 			while(first != null){
-				//reallocating size of array
-				String[] temp = new String[list.length];
-				temp = list;
-				// increase array size by 2 (1 space for Document and 1 space for TFIDF)
-				list = new String[index+2];
-				// copy data from temp array back to array w/ realocated size
-				for(int i = 0; i < temp.length; i++){
-					list[i] = temp[i];
-				}
-				
-				//adding document name to array
-				String document = first.getData();
-				DecimalFormat df = new DecimalFormat("###0.00");
-				
 				//calculating TFIDF
-				double tfidf =  (float)first.getTermFrequency() * Math.log((float)(WebPages.getTotalDoc())/(float)(docFrequency));
-				
-				// adding document name to array
-				list[index] = document;
+				tfidf =  (float)first.getTermFrequency() * Math.log((float)(WebPages.totalDoc)/(float)(docFrequency));
 				// casting TFIDF into String from double w/ DecimalFormatter
-				String tFIDF = String.valueOf(df.format(tfidf));
-				index++;
+				double tFIDF = tfidf;
 				// adding TFIDF to array
-				list[index] = tFIDF;
+				TFIDFarray[index] = tFIDF;
 				index++;
 				first = first.getNext();
-				
 			}
-			//return array of document names
+			//set first back to head of linked list
+			first = this.list.head;
+			// return list of TFIDF and document names;
+			return  TFIDFarray;
 
-			return list;
 		}
+		
+		
+		public String[] fillDocArray(){
+			
+			String[] docs = new String[docFrequency];
+			int index = 0;
+			first = this.list.head;
+			// loop through linked list of document names
+			while(first != null){
+				//adding document name to array
+				String document = first.getData();
+				docs[index] = document;
+				index++;
+				first = first.getNext();
+			}
+			//set first back to head of linked list
+			first = this.list.head;
+			// return list of TFIDF and document names;
+			return docs;
+		}
+			
 }
