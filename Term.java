@@ -1,7 +1,7 @@
 
 public class Term {
 	
-		public String word;
+		private String word;
 		public int docFrequency;
 		public int totalFrequency;
 		LinkedList list = new LinkedList();
@@ -13,6 +13,10 @@ public class Term {
 		public Term(String name){
 			this.word = name;
 			docFrequency = 0;
+		}
+		
+		public String getWord(){
+			return word;
 		}
 		
 		//increment frequency for terms and add documents to linked list

@@ -36,7 +36,7 @@ public class HashTableIterator implements Iterator<Term> {
         for(int i = (current + 1); i<= max; i++){
             try {
                 Term t = table[i];
-                if(t.word != "RESERVED")
+                if(t.getWord() != "RESERVED")
                 {
                     current = i;
                     return t;

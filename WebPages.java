@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class WebPages{
 
-	public HashTable hashTable;
+	private HashTable hashTable;
 	public static int totalDoc = 0;
 	
 	// arrays for Sim calculation
@@ -25,12 +25,14 @@ public class WebPages{
 		hashTable = new HashTable(hashSize);
 	}
 	
+	public HashTable getHashTable(){
+		return hashTable;
+	}
+	
 	//add page to fill in ArrayList
 	public void addPage(String filename){
-		
 		// increase number of total documents
 		totalDoc++;
-		
 		// copy docs content to temp array
 		String[] temp = new String[docs.length];
 		for(int j = 0; j < temp.length; j++){
@@ -44,21 +46,14 @@ public class WebPages{
 		}
 		// add read in file to end of docs array
 		docs[docs.length-1] = filename;
-		
 		// sort docs array alphabetically
 		Arrays.sort(docs);
-
 		try{
-
 			File fileIn = new File(filename);
-
 			//Scanning file using delimiter
-			@SuppressWarnings("resource")
 			Scanner scan = new Scanner(fileIn).useDelimiter("[ |*|-|,|!|?|.|:|\\n|\\t|\\r|(|)|\\\"]+");
-			
 			//looping through file and adding words
 			while(scan.hasNext()){
-
 				//grabbing next word and removing in-text HTML
 				String nextWord = scan.next().toLowerCase().replaceAll("<[^>]*>", "").replaceAll("/", "");
 				if (nextWord.equals("")){
@@ -85,10 +80,8 @@ public class WebPages{
 						}
 					}
 				}
-
 				//adds the word to the BST
 				hashTable.add(filename, nextWord);
-				
 			}
 
 		} catch (FileNotFoundException e) {
@@ -101,7 +94,7 @@ public class WebPages{
 	public void printTable(){
 		for(Term term: hashTable)
         {
-            System.out.println(term.word);
+            System.out.println(term.getWord());
         }
 	}
 
@@ -181,7 +174,7 @@ public class WebPages{
 				 // Scanning through all query words to check if Term is in query
 				 for(int k = 0; k < queryArray.length; k++ ){
 					 // a) if the term is in query, compute wiq, square it, and add to queryWeights
-					 if(currentTerm.word.equals(queryArray[k])){
+					 if(currentTerm.getWord().equals(queryArray[k])){
 						 inquery = true;
 						 double wiqTemp = wiq(totalDoc, currentTerm.docFrequency, currentTerm);
 						 wiqTemp = wiqTemp*wiqTemp;

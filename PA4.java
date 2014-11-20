@@ -34,6 +34,8 @@ public class PA4 {
 			System.out.println("WORDS");
 			web.printTable();
 			System.out.println();
+			//web.getHashTable().printDetailedTable();
+
 
 			//scanning though all whichPages words
 			while(!(nextArg == null)){

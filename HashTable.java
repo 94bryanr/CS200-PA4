@@ -31,22 +31,26 @@ public class HashTable implements TermIndex, Iterable<Term> {
     private void add(Term term)
     {
         //Do not add new term if one already exists
-        if(search(term.word) == -1){
+        if(search(term.getWord()) == -1){
             //Word does not already exist
-            int index = getIndex(term.word);
+            int originalIndex = getIndex(term.getWord());
             //Begin quadratically probing for first open spot
+            int probeIndex = originalIndex;
             int counter = 1;
             while(true)
             {
-                if(hashTable[index] == null){
-                    hashTable[index] = term;
+                if(hashTable[probeIndex] == null){
+                    hashTable[probeIndex] = term;
                     itemCounter++;
                     //Item successfully added
+                    //System.out.println("Adding: " + term.getWord() + " at " + probeIndex);
+                    //printDetailedTable();
                     break;
                 }
                 else {
-                    index += counter * counter;
-                    index %= (hashTable.length - 1);
+                	//System.out.println(probeIndex + " not avaiable");
+                    probeIndex = originalIndex + (counter * counter);
+                    probeIndex %= (hashTable.length);
                     counter ++;
                 }
 
@@ -64,7 +68,7 @@ public class HashTable implements TermIndex, Iterable<Term> {
         if(itemCounter >= (hashTable.length*.8)){
             rehash();
         }
-    }
+}
 
 	@Override
 	public int size() {
@@ -92,26 +96,26 @@ public class HashTable implements TermIndex, Iterable<Term> {
     public int search(String key)
     {
         //Get first index to check
-        int index = getIndex(key);
-
+        int originalIndex = getIndex(key);
+        int probeIndex = originalIndex;
         //Begin checking, use quadratic probing, terminate when null
         int counter = 1;
         while(true) {
             //If index is null, terminate:
-            if(hashTable[index] == null)
+            if(hashTable[probeIndex] == null)
             {
                 return -1;
             }
             else {
-                if(hashTable[index].word.equals(key)){
+                if(hashTable[probeIndex].getWord().equals(key)){
                     //Index matches search key
-                    return index;
+                    return probeIndex;
                 }
                 else
                 {
                     //Update index using quadratic probing
-                    index += (counter*counter);
-                    index %= (hashTable.length - 1);
+                    probeIndex = originalIndex + (counter*counter);
+                    probeIndex %= (hashTable.length);
                     counter ++;
                 }
             }
@@ -123,8 +127,8 @@ public class HashTable implements TermIndex, Iterable<Term> {
     }
 
     private int getIndex(String word){
-        int index = word.hashCode();
-        index %= (hashTable.length - 1);
+        int index = word.toLowerCase().hashCode();
+        index %= (hashTable.length);
         return Math.abs(index);
     }
 	
@@ -144,6 +148,23 @@ public class HashTable implements TermIndex, Iterable<Term> {
                 }
             }catch(NullPointerException e){}
 		}
+	}
+	
+	public void printDetailedTable(){
+		System.out.println("----BEGINNING----");
+		for(int index = 0; index < hashTable.length; index++){
+			if(hashTable[index] == null){
+				System.out.println(index + ": NULL");
+			}
+			else if(hashTable[index].getWord().equals("RESERVED")){
+				System.out.println(index + ": RESERVED");
+			}
+			else{
+				System.out.println(index + ": " + hashTable[index].getWord());
+			}
+		}
+		System.out.println("----ENDING----");
+		System.out.println();
 	}
 
     @Override
