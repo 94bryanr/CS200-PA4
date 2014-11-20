@@ -91,7 +91,6 @@ public class WebPages{
 				
 			}
 
-
 		} catch (FileNotFoundException e) {
 			System.out.println("Error: File Not Found");
 			e.printStackTrace();
@@ -224,5 +223,6 @@ public class WebPages{
 		 return term.tfidf;
 	 }
 	
+
 
 }

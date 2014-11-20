@@ -1,4 +1,3 @@
-
 public class HashTable implements TermIndex {
 	
 	public int size;
@@ -14,18 +13,18 @@ public class HashTable implements TermIndex {
 	@Override
 	public void add(String filename, String newWord) {
 		Term word = new Term(newWord);
+		word.incFrequency(filename);
 		//Do not add new term if one already exists
 		if(get(newWord, false) == null){
 			int position = search(newWord, null);
 			if(notFound == false){
 				itemCounter++;
-				word.incFrequency(filename);
 				hashTable[position] = word;
 			}
 		}
-		else if(notFound == false){
+		else
 			get(newWord, false).incFrequency(filename);
-		}
+		
 		if(itemCounter >= (hashTable.length*.8)){
 			rehash();
 		}
@@ -88,7 +87,6 @@ public class HashTable implements TermIndex {
 				// quadratic probing
 				positionIncrement = (counter*counter);
 				counter++;
-				//System.out.println("Probed: " + positionIncrement + " address");
 			}
 		}
 		else if(end == null){
@@ -101,12 +99,10 @@ public class HashTable implements TermIndex {
 				// quadratic probing
 				positionIncrement = (counter*counter);
 				counter++;
-				//System.out.println("ProbedHERE: " + positionIncrement + " address");
 			}
 
 		}
 		// return position
-		//System.out.println("Found position: " + (position + positionIncrement));
 		return (position+positionIncrement)%(size-1);
 
 	}

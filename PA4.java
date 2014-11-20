@@ -3,15 +3,9 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.Scanner;
 
-
 public class PA4 {
-
 	public static void main(String[] args) {
-		
-
 		try {
-			
-
 			File file = new File(args[0]);
 			Scanner scan;
 			scan = new Scanner(file);
@@ -28,7 +22,7 @@ public class PA4 {
 				nextArg = scan.nextLine();
 			}
 			
-			// print out BST
+			// print out BST        this.table = table;
 			System.out.println("WORDS");
 			web.printTable();
 
@@ -47,8 +41,6 @@ public class PA4 {
 			System.out.println("WORDS");
 			web.printTable();
 			System.out.println();
-
-
 
 			//scanning though all whichPages words
 			while(!(nextArg == null)){
@@ -80,8 +72,5 @@ public class PA4 {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
-
 	}
-
 }
