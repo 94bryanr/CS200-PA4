@@ -130,7 +130,7 @@ public class HashTable implements TermIndex, Iterable<Term> {
 	
 	// will change size to 2*currentSize+1 and will rehash each item
 	private void rehash(){
-        System.out.println("REHASH: New Size: " + hashTable.length*2);
+        //System.out.println("REHASH: New Size: " + hashTable.length*2);
         itemCounter = 0;
 		Term[] tempArray = hashTable;
         int preRehashSize = tempArray.length;
