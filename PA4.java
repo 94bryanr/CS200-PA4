@@ -21,23 +21,16 @@ public class PA4 {
 				web.addPage(nextArg);
 				nextArg = scan.nextLine();
 			}
-			
-			// print out BST        this.table = table;
-			System.out.println("WORDS");
-			web.printTable();
 
 			//skip EOFs
 			//nextArg = scan.nextLine();
-
-			System.out.println();
-			
 			while(!(nextArg.equals("*STOPs*"))){
 				nextArg = scan.nextLine();
 				web.pruneStopWords(nextArg);
 			}
 			
 			nextArg = scan.nextLine();
-			
+
 			System.out.println("WORDS");
 			web.printTable();
 			System.out.println();

@@ -99,15 +99,10 @@ public class WebPages{
 	
 	
 	public void printTable(){
-
-		for(int i = 0; i < hashTable.size(); i++){
-			if(hashTable.hashTable[i] == null || hashTable.hashTable[i].word.equals("RESERVED")){
-				//System.out.println("NULL");
-			}
-			else{
-				System.out.println(hashTable.hashTable[i].word);
-			}
-		}
+		for(Term term: hashTable)
+        {
+            System.out.println(term.word);
+        }
 	}
 
 	 
@@ -180,7 +175,7 @@ public class WebPages{
 
 		 //Traverse termIndex and compare each Term to each query word
 		 for(int i = 0; i < hashTable.size(); i++){
-			 Term currentTerm = hashTable.hashTable[i];
+			 Term currentTerm = hashTable.getHashTable()[i];
 			 if(currentTerm != null){
 				 boolean inquery = false;
 				 // Scanning through all query words to check if Term is in query

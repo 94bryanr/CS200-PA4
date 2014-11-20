@@ -1,126 +1,153 @@
-public class HashTable implements TermIndex {
-	
-	public int size;
-	public Term[] hashTable;
-	boolean notFound;
-	public int itemCounter = 0;
+import java.util.Iterator;
+
+public class HashTable implements TermIndex, Iterable<Term> {
+
+	private Term[] hashTable;
+	private int itemCounter = 0;
 	
 	public HashTable(int arraySize){
 		hashTable = new Term[arraySize];
-		this.size = arraySize;
 	}
 
-	@Override
+    public Term[] getHashTable() {
+        return hashTable;
+    }
+
+    public int getItemCounter() {
+        return itemCounter;
+    }
+
+    @Override
 	public void add(String filename, String newWord) {
+        //Create the words Term object
 		Term word = new Term(newWord);
 		word.incFrequency(filename);
-		//Do not add new term if one already exists
-		if(get(newWord, false) == null){
-			int position = search(newWord, null);
-			if(notFound == false){
-				itemCounter++;
-				hashTable[position] = word;
-			}
-		}
-		else
-			get(newWord, false).incFrequency(filename);
-		
-		if(itemCounter >= (hashTable.length*.8)){
-			rehash();
-		}
+        if(search(newWord) != -1)
+            hashTable[search(newWord)].incFrequency(filename);
+        else
+		    add(word);
 	}
+
+    private void add(Term term)
+    {
+        //Do not add new term if one already exists
+        if(search(term.word) == -1){
+            //Word does not already exist
+            int index = getIndex(term.word);
+            //Begin quadratically probing for first open spot
+            int counter = 1;
+            while(true)
+            {
+                if(hashTable[index] == null){
+                    hashTable[index] = term;
+                    itemCounter++;
+                    //Item successfully added
+                    break;
+                }
+                else {
+                    index += counter * counter;
+                    index %= (hashTable.length - 1);
+                    counter ++;
+                }
+
+                if(counter == hashTable.length)
+                    try {
+                        throw new Exception();
+                    } catch (Exception e) {System.out.println("Error: Can not add term to hashtable");}
+                }
+            }
+        else{
+            System.out.println("Error: Added duplicate");
+        }
+
+        //Rehash if hashtable is 80 percent full
+        if(itemCounter >= (hashTable.length*.8)){
+            rehash();
+        }
+    }
 
 	@Override
 	public int size() {
-		return size;
+		return hashTable.length;
 	}
 
 	@Override
 	public void delete(String word) {
-		int position = search(word, word);
-		if(notFound == false){
-			if(hashTable[position] != null){
-				itemCounter--;
-				hashTable[position] = new Term("RESERVED");
-			}
-		}
+		int position = search(word);
+        if (position != -1)
+		    hashTable[position] = new Term("RESERVED");
 	}
 
 	@Override
-	public Term get(String word, Boolean printP) {
-		int position = search(word, word);
-		if(notFound == false){
-			return hashTable[position];
-		}
-		else{
-			return null;
-		}
+	public Term get(String word) {
+		int position = search(word);
+        if (position != -1)
+            return hashTable[position];
+        return null;
 	}
-	
-	public int search(String key, String endCondition){
-		notFound = false;
-		// construct new Term = null
-		Term end = null;
-		// if newWord is term, construct
-		if(endCondition != null){
-			end = new Term(endCondition);
-		}
-		// find hash position
-		int position = Math.abs((key.hashCode())%(size-1));
-		int counter = 1;
-		int positionIncrement = 0;
-		// keep quadratically probing until you find the position
-		if(endCondition != null && hashTable[(position+positionIncrement)%(size-1)] != null){
-			while(true){
-				Term compareTerm = hashTable[(position+positionIncrement)%(size-1)];
-				if (compareTerm == null){
-					notFound = true;
-					return -1;
-				}
-				else if (compareTerm.word.equals(end.word))
-					return position + positionIncrement;
-				// if we have probed as big as our table size, break from loop
-				if(counter == size){
-					notFound = true;
-					break;
-				}
-				// quadratic probing
-				positionIncrement = (counter*counter);
-				counter++;
-			}
-		}
-		else if(end == null){
-			while(!(hashTable[(position+positionIncrement)%(size-1)] == end)){
-				// if we have probed as big as our table size, break from loop
-				if(counter == size){
-					notFound = true;
-					break;
-				}
-				// quadratic probing
-				positionIncrement = (counter*counter);
-				counter++;
-			}
 
-		}
-		// return position
-		return (position+positionIncrement)%(size-1);
+    /*Search will search for a word in the hashTable. If the word exists it will return the position in the
+    hash table where that word exists. If the word does not exist it will return -1.
+     */
+    public int search(String key)
+    {
+        //Get first index to check
+        int index = getIndex(key);
 
-	}
+        //Begin checking, use quadratic probing, terminate when null
+        int counter = 1;
+        while(true) {
+            //If index is null, terminate:
+            if(hashTable[index] == null)
+            {
+                return -1;
+            }
+            else {
+                if(hashTable[index].word.equals(key)){
+                    //Index matches search key
+                    return index;
+                }
+                else
+                {
+                    //Update index using quadratic probing
+                    index += (counter*counter);
+                    index %= (hashTable.length - 1);
+                    counter ++;
+                }
+            }
+
+            //Stop probing after checking <size of hash table> positions
+            if(counter == hashTable.length)
+                return -1;
+        }
+    }
+
+    private int getIndex(String word){
+        int index = word.hashCode();
+        index %= (hashTable.length - 1);
+        return Math.abs(index);
+    }
 	
 	// will change size to 2*currentSize+1 and will rehash each item
 	private void rehash(){
-		int originalsize = size;
-		size = (2*size)+1;
+        System.out.println("REHASH: New Size: " + hashTable.length*2);
+        itemCounter = 0;
 		Term[] tempArray = hashTable;
-		hashTable = new Term[size];
-		
-		for(int i = 0; i < originalsize; i++){
-			if(!(tempArray[i].equals("RESERVED") || tempArray[i] == null)){
-				hashTable[(tempArray[i].word.hashCode())%size] = tempArray[i];
-			}
+        int preRehashSize = tempArray.length;
+		hashTable = new Term[hashTable.length*2];
+		for(int i = 0; i < preRehashSize; i++){
+            //If the term is not RESERVED or NULL, add it to the new array
+            try {
+                Term toAdd = tempArray[i];
+                if(!(toAdd.equals("RESERVED") || toAdd == null)){
+                    add(toAdd);
+                }
+            }catch(NullPointerException e){}
 		}
-
-		
 	}
 
+    @Override
+    public Iterator iterator() {
+        return new HashTableIterator(hashTable);
+    }
 }

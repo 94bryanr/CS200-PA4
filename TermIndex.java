@@ -6,6 +6,6 @@ public interface TermIndex {
 
     public void delete(String word);
 
-    public Term get(String word, Boolean printP);
+    public Term get(String word);
 
 }
