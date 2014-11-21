@@ -137,9 +137,8 @@ public class HashTable implements TermIndex, Iterable<Term> {
         //System.out.println("REHASH: New Size: " + hashTable.length*2);
         itemCounter = 0;
 		Term[] tempArray = hashTable;
-        int preRehashSize = tempArray.length;
-		hashTable = new Term[hashTable.length*2];
-		for(int i = 0; i < preRehashSize; i++){
+		hashTable = new Term[(hashTable.length*2)+1];
+		for(int i = 0; i < tempArray.length; i++){
             //If the term is not RESERVED or NULL, add it to the new array
             try {
                 Term toAdd = tempArray[i];

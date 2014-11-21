@@ -31,6 +31,7 @@ public class WebPages{
 	
 	//add page to fill in ArrayList
 	public void addPage(String filename){
+		
 		// increase number of total documents
 		totalDoc++;
 		// copy docs content to temp array
@@ -48,41 +49,20 @@ public class WebPages{
 		docs[docs.length-1] = filename;
 		// sort docs array alphabetically
 		Arrays.sort(docs);
+		
 		try{
 			File fileIn = new File(filename);
 			//Scanning file using delimiter
-			Scanner scan = new Scanner(fileIn).useDelimiter("[ |*|-|,|!|?|.|:|\\n|\\t|\\r|(|)|\\\"]+");
+			Scanner scan = new Scanner(fileIn).useDelimiter("([ *-,!?.:\\n\\t\\r()\\\"]|<.*?>)+");
 			//looping through file and adding words
 			while(scan.hasNext()){
 				//grabbing next word and removing in-text HTML
-				String nextWord = scan.next().toLowerCase().replaceAll("<[^>]*>", "").replaceAll("/", "");
-				if (nextWord.equals("")){
-					nextWord = scan.next().toLowerCase();
-				}
-				//removing other HTML
-				if(nextWord.length() > 0){
-					if(nextWord.charAt(nextWord.length()-1) == '>'){
-						nextWord = scan.next().toLowerCase();
-					}
-					if(nextWord.charAt(0) == '<'){
-						if(nextWord.charAt(nextWord.length() - 1) == '>'){
-							nextWord = scan.next().toLowerCase();
-						}
-						else{
-							// Keep scanning until you hit >
-							while((!(nextWord.charAt(nextWord.length() - 1) == '>')) && scan.hasNext()){
-								nextWord = scan.next().toLowerCase();
-							}
-							// if more words, skip over word with >
-							if(scan.hasNext())  
-								nextWord = scan.next().toLowerCase();
-							else break;
-						}
-					}
-				}
+				String nextWord = scan.next().toLowerCase();
 				//adds the word to the BST
 				hashTable.add(filename, nextWord);
 			}
+			
+			scan.close();
 
 		} catch (FileNotFoundException e) {
 			System.out.println("Error: File Not Found");
@@ -145,7 +125,6 @@ public class WebPages{
 		 double max = 0;
 		 // traverse all documents
 		 for(int i = 0; i < docs.length; i++){
-			 //System.out.println("document: " + docs[i] + " sim: " + sim(common[i], docSpecific[i], queryWeights));
 			 double simValue = sim(common[i], docSpecific[i], queryWeights);
 			 if(simValue >= max){
 				 max = simValue;

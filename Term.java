@@ -80,12 +80,10 @@ public class Term {
 			first = this.list.head;
 			// return list of TFIDF and document names;
 			return  TFIDFarray;
-
 		}
 		
 		
 		public String[] fillDocArray(){
-			
 			String[] docs = new String[docFrequency];
 			int index = 0;
 			first = this.list.head;
