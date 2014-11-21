@@ -53,12 +53,13 @@ public class WebPages{
 		try{
 			File fileIn = new File(filename);
 			//Scanning file using delimiter
-			Scanner scan = new Scanner(fileIn).useDelimiter("([ *-,!?.:\\n\\t\\r()\\\"]|<.*?>)+");
+			Scanner scan = new Scanner(fileIn).useDelimiter("<[^>]+>|[^0-9a-zA-Z']");
 			//looping through file and adding words
 			while(scan.hasNext()){
 				//grabbing next word and removing in-text HTML
 				String nextWord = scan.next().toLowerCase();
 				//adds the word to the BST
+				if(!nextWord.equals(""))
 				hashTable.add(filename, nextWord);
 			}
 			
@@ -189,7 +190,4 @@ public class WebPages{
 	 public double wid(Term term){
 		 return term.tfidf;
 	 }
-	
-
-
 }
