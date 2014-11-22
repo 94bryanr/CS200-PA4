@@ -85,20 +85,7 @@ public class WebPages{
 	 }
 	 
 	 public String[] fillQueryArray(String query){
-		 Scanner scan = new Scanner(query);
-		 int querySize = 0;
-		 while(scan.hasNext()){
-			 querySize++;
-			 scan.next();
-		 }
-		 scan.close();
-		 String[] queryArray = new String[querySize];
-		 Scanner scan2 = new Scanner(query);
-		 for(int i = 0; i < queryArray.length; i++){
-			 String word = scan2.next();
-			 queryArray[i] = word;
-		 }
-		 scan2.close();
+		 String[] queryArray = query.split(" ");
 		 return queryArray;
 	 }
 	 
@@ -175,7 +162,7 @@ public class WebPages{
 					 
 					 // if term is in doc & query
 					 if(inquery == true){
-						 double commonValue = tfidfValues[a]*wiq(totalDoc, currentTerm.docFrequency, currentTerm);
+						 double commonValue = tfidfValues[a]*((double)wiq(totalDoc, currentTerm.docFrequency, currentTerm));
 						 common[docposition] += commonValue;
 					 }
 				 }
@@ -184,7 +171,7 @@ public class WebPages{
 	 }
 	 
 	 public double wiq(int numTotalDocuments, int numDocumentsPerTerm, Term term){
-		 return .5*(1+Math.log(numTotalDocuments/numDocumentsPerTerm));
+		 return .5*(1+Math.log(((double)(numTotalDocuments/numDocumentsPerTerm))));
 	 }
 	 
 	 public double wid(Term term){
